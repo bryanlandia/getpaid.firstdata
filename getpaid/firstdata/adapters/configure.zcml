@@ -1,0 +1,8 @@
+<!-- configure.zcml for adapters of getpaid.firstdata -->
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    i18n_domain="getpaid.firstdata">
+
+  <adapter factory=".order.FirstDataGGe4OrderInfo" />
+
+</configure>

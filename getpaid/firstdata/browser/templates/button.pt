@@ -1,0 +1,14 @@
+<!-- button.pt -->
+<tr i18n:domain="getpaid.firstdata" tal:define="processor view/getProcessor">
+  <td >
+    <input name="form.payment_processor" type="radio" tal:attributes="value processor/name">
+  </td>
+  <td>
+    <b>First Data Global Gateway e4</b>
+    <!-- Place your payment processor logo here as <img> -->
+  </td>
+  <td class="description" i18n:translate="firstdata_payment_method_description">
+    For Credit Card Payment.
+  </td>
+</tr>
+

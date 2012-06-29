@@ -1,0 +1,49 @@
+<!-- paymentprocessors.zcml for getpaid.firstdata -->
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:five="http://namespaces.zope.org/five"
+    xmlns:i18n="http://namespaces.zope.org/i18n"
+    xmlns:paymentprocessors="http://namespaces.plonegetpaid.com/paymentprocessors"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    i18n_domain="getpaid.firstdata">
+
+  <include package="getpaid.paymentprocessors" />
+
+<!-- Register logic class dealing with the actual payment -->
+  <adapter
+    for="getpaid.core.interfaces.IStore"
+    provides="getpaid.core.interfaces.IPaymentProcessor"
+    factory=".firstdata.FirstDataGGe4Processor"
+    name="FirstDataGGe4"
+    />
+
+<!-- Register payment processor specific user interface parts -->
+  <paymentprocessors:registerProcessor
+    name="FirstDataGGe4 Processor"
+    i18n_name="FirstDataGGe4"
+    selection_view="firstdatagge4_payment_button"
+    review_pay_view="plonegetpaid_payment_pay_page"
+    />
+
+  <!-- <browser:page
+    for="getpaid.core.interfaces.IStore"
+    name="firstdatagge4_payment_settings_page"
+    class=".browser.admin.PaymentProcessor"
+    permission="cmf.ManagePortal"
+    /> -->
+
+  <browser:page
+    for="getpaid.core.interfaces.IStore"
+    name="firstdatagge4_payment_button"
+    class=".browser.button.FirstDataGGe4PaymentButton"
+    permission="zope2.View"
+    />
+
+  <browser:page
+    for="getpaid.core.interfaces.IStore"
+    name="plonegetpaid_payment_pay_page"
+    permission="zope2.View"
+    class="Products.PloneGetPaid.browser.checkout.CheckoutReviewAndPay"
+    />
+
+</configure>

@@ -1,0 +1,27 @@
+<!-- configure.zcml for getpaid.firstdata -->
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:zcml="http://namespaces.zope.org/zcml"
+  xmlns:five="http://namespaces.zope.org/five"
+  xmlns:i18n="http://namespaces.zope.org/i18n"
+  i18n_domain="getpaid.firstdata">
+
+  <include package=".adapters" />
+  <include package=".browser" />
+
+  <include 
+    zcml:condition="installed getpaid.paymentprocessors"
+    file="paymentprocessors.zcml" />
+
+  <adapter
+    name="FirstDataGGe4 Processor"
+    factory=".firstdatagge4.FirstDataGGe4Processor" />
+
+  <adapter
+    for="Products.CMFCore.interfaces.ISiteRoot"
+    provides=".interfaces.IFirstDataGGe4Options"
+    factory=".options.FirstDataGGe4Options" />
+    
+  <utility factory=".utilities.DecimalPrice" />
+
+</configure>

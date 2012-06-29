@@ -5,7 +5,7 @@ version = '0.1'
 
 setup(name='getpaid.firstdata',
       version=version,
-      description="GetPaid FirstData GlobalGateway e4 payment processor functionality",
+      description="GetPaid FirstData Global Gateway e4 payment processor functionality",
       long_description=open("README.txt").read() + "\n" +
                        open(os.path.join("docs", "HISTORY.txt")).read(),
       # Get more strings from
@@ -16,7 +16,7 @@ setup(name='getpaid.firstdata',
       keywords='',
       author='',
       author_email='',
-      url='http://svn.plone.org/svn/collective/',
+      url='https://github.com/bryanlandia/getpaid.firstdata',
       license='GPL',
       packages=find_packages(exclude=['ez_setup']),
       namespace_packages=['getpaid'],
@@ -28,5 +28,7 @@ setup(name='getpaid.firstdata',
       ],
       entry_points="""
       # -*- Entry points: -*-
+      [z3c.autoinclude.plugin]
+      target = plone
       """,
       )

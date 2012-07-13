@@ -9,13 +9,16 @@
   <include package=".adapters" />
   <include package=".browser" />
 
+  <adapter
+    for="getpaid.core.interfaces.IStore"
+    provides="getpaid.core.interfaces.IPaymentProcessor"
+    name="First Data Global Gateway e4"
+    factory=".firstdata.FirstDataGGe4Processor" />
+
+  <!-- support multiple processor choices via getpaid.paymentprocessors -->  
   <include 
     zcml:condition="installed getpaid.paymentprocessors"
     file="paymentprocessors.zcml" />
-
-  <adapter
-    name="FirstDataGGe4 Processor"
-    factory=".firstdatagge4.FirstDataGGe4Processor" />
 
   <adapter
     for="Products.CMFCore.interfaces.ISiteRoot"

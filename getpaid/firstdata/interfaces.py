@@ -1,12 +1,8 @@
 from zope import schema
 from zope.interface import Interface
-from getpaid.core.interfaces import IPaymentProcessor,IPaymentProcessorOptions#, IRecurringPaymentProcessor
+from getpaid.core.interfaces import IPaymentProcessorOptions#, IRecurringPaymentProcessor
 from getpaid.firstdata import FirstDataGGe4MessageFactory as _
 
-class IFirstDataGGe4Processor(IPaymentProcessor):
-    """
-    FirstData Global Gateway e4 Processor
-    """
 
 class IFirstDataGGe4Options(IPaymentProcessorOptions):
     """
@@ -18,7 +14,28 @@ class IFirstDataGGe4Options(IPaymentProcessorOptions):
                 "Production")
         )
     merchant_exact_id = schema.ASCIILine( title=_(u"ExactID (GatewayID)") )
-    merchant_password = schema.ASCIILine( title=_(u"Password") )
+    merchant_password = schema.Password( title=_(u"Password") )
+    allow_authorization = schema.Choice(
+        title=_(u"Allow Authorizations"),
+        default=u"allow_authorization",
+        values = (u"allow_authorization",
+                  u"no_authorization")
+        )
+
+    allow_capture = schema.Choice(
+        title=_(u"Allow Captures"),
+        default=u"allow_capture",
+        values = (u"allow_capture",
+                  u"no_capture" )
+        )
+
+    allow_refunds = schema.Choice(
+        title=_(u"Allow Refunds"),
+        default=u"allow_refund",
+        values = (u"allow_refund",
+                  u"no_refund" )
+        )
+
 
 
 ### Adapters

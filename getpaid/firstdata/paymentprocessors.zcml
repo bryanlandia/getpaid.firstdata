@@ -9,14 +9,6 @@
 
   <include package="getpaid.paymentprocessors" />
 
-<!-- Register logic class dealing with the actual payment -->
-  <adapter
-    for="getpaid.core.interfaces.IStore"
-    provides="getpaid.core.interfaces.IPaymentProcessor"
-    factory=".firstdata.FirstDataGGe4Processor"
-    name="FirstDataGGe4"
-    />
-
 <!-- Register payment processor specific user interface parts -->
   <paymentprocessors:registerProcessor
     name="FirstDataGGe4 Processor"
@@ -25,6 +17,8 @@
     review_pay_view="plonegetpaid_payment_pay_page"
     />
 
+
+  <-- NOT IMPLEMENTED -->  
   <!-- <browser:page
     for="getpaid.core.interfaces.IStore"
     name="firstdatagge4_payment_settings_page"
@@ -32,7 +26,7 @@
     permission="cmf.ManagePortal"
     /> -->
 
-  <browser:page
+  <!-- <browser:page
     for="getpaid.core.interfaces.IStore"
     name="firstdatagge4_payment_button"
     class=".browser.button.FirstDataGGe4PaymentButton"
@@ -44,6 +38,6 @@
     name="plonegetpaid_payment_pay_page"
     permission="zope2.View"
     class="Products.PloneGetPaid.browser.checkout.CheckoutReviewAndPay"
-    />
+    /> -->
 
 </configure>

@@ -37,20 +37,11 @@ class FirstDataGGe4OrderInfo(object):
         firstdata_price = unicode(Decimal(price * 100).quantize(Decimal('1')))
         options = IFirstDataGGe4Options(site)
         merchant_exact_id = options.merchant_exact_id
-        # context_state = getMultiAdapter((site, site.REQUEST), name=u'plone_context_state')
-        # current_base_url = context_state.current_base_url()
-        # base_url = current_base_url[:current_base_url.rfind('/')]
-        # success_url = base_url + '/@@luottokunta-thank-you?getpaid_order_id=%s&luottokunta_order_id=%s' %(getpaid_order_id, order_id)
-        # failure_url = base_url + '/@@luottokunta-declined?getpaid_order_id=%s&luottokunta_order_id=%s' %(getpaid_order_id, order_id)
-        # cancel_url = base_url + '/@@luottokunta-cancelled?getpaid_order_id=%s&luottokunta_order_id=%s' %(getpaid_order_id, order_id)
         order_info = {
                         'merchant_exact_id' : merchant_exact_id,
                         'price' : firstdata_price,
                         'order_number' : getpaid_order_id,
                         'getpaid_order_id': getpaid_order_id,
-                        # 'success_url' : success_url,
-                        # 'failure_url' : failure_url,
-                        # 'cancel_url' : cancel_url,
                         'customer_id' : customer_id,
         }
         return order_info

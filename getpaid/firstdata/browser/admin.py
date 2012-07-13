@@ -5,4 +5,4 @@ class PaymentProcessor(base.PaymentProcessor):
 
     def getPaymentProcessorName(self):
         # Match getpaid.core.interfaces.IPaymentProcessor name
-        return "FirstDataGGe4 Processor"
+        return "First Data Global Gateway e4"

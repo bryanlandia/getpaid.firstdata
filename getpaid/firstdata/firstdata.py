@@ -78,8 +78,8 @@ class FirstDataGGe4Connection(object):
         wsdl_uri = self.server + '/transaction/wsdl'
         client = get_suds_client(wsdl_uri)
         tx = client.factory.create('ns0:Transaction')
-        tx.ExactID = self.login #'A01118-02' # would pass this in
-        tx.Password = self.password #'SiKjS8Q0' # would pass this in
+        tx.ExactID = self.login
+        tx.Password = self.password
         for key, val in kws.items():
             if tx.__contains__(key):
                 tx.__setattr__(key, val)

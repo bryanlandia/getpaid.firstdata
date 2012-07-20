@@ -11,7 +11,8 @@ class IFirstDataGGe4Options(IPaymentProcessorOptions):
     server_url = schema.Choice(
         title=_(u"FirstData Global Gateway e4 Server URL"),
         values=("Demo",
-                "Production")
+                "Production"),
+        default="Demo"
         )
     merchant_exact_id = schema.ASCIILine( title=_(u"ExactID (GatewayID)") )
     merchant_password = schema.Password( title=_(u"Password") )

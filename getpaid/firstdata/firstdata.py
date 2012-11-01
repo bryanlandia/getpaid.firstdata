@@ -7,7 +7,7 @@ from zope.annotation.interfaces import IAnnotations
 from z3c.suds import get_suds_client
 
 from getpaid.firstdata.interfaces import IFirstDataGGe4Options
-from getpaid.core import interfaces
+from getpaid.core import interfaces as GPInterfaces
 
 
 APPROVAL_KEY = "getpaid.firstdata.approval_code"
@@ -149,13 +149,12 @@ class FirstDataGGe4Processor(object):
                 bill_street = p.sub(val, bill_street)
             return bill_street
 
-        # XXX TODO: for now not worrying about converting the numbers
         return "%s|%s|%s|%s" % (
             _format_street_numbers(bill_address.bill_first_line),
             bill_address.bill_postal_code,
             bill_address.bill_city,
             bill_address.bill_state,
-            # bill_address.bill_country,
+            # 'USA',
             )
 
     def _format_cc_expiry(self, payment):
@@ -171,10 +170,12 @@ class FirstDataGGe4Processor(object):
         """ Authorize an amount using the card and buyer information.
         """
         if self.settings.allow_authorization == u'allow_authorization':
-            bill_addr = order.billing_address           
+            bill_addr = order.billing_address
+            price = order.getTotalPrice()
             txKw = dict(
+                Ecommerce_flag = '7',
                 Transaction_Type = '01',
-                DollarAmount = 1.00,
+                DollarAmount = price,
                 CardHoldersName = payment.name_on_card,
                 Card_Number = payment.credit_card,
                 Expiry_Date = self._format_cc_expiry(payment),
@@ -188,9 +189,10 @@ class FirstDataGGe4Processor(object):
                 )
 
             response = self.connection.sendTransaction(**txKw)
+            
             if self._is_successful_response(response):
                 annotation = IAnnotations( order )
-                annotation[interfaces.keys.processor_txn_id ] = \
+                annotation[GPInterfaces.keys.processor_txn_id ] = \
                     response.Transaction_Tag
                 order.processor_order_id = response.Retrieval_Ref_No
                 order.user_payment_info_last4 = payment.credit_card[-4:]
@@ -199,8 +201,14 @@ class FirstDataGGe4Processor(object):
                     order.contact_information.phone_number
                 annotation[APPROVAL_KEY] = response.Authorization_Num
                 annotation[TRANSACTION_TAG] = response.Transaction_Tag
-                return interfaces.keys.results_success
-        return "Authorization Failed"
+                return GPInterfaces.keys.results_success
+            # failed
+            else:
+                resp_err = response.EXact_Message
+            return ("Authorization Failed (%s).  Please check your entries "
+                    "and try again." % resp_err)
+        return ("Authorization Failed.  Please check your entries and try "
+                "again.")
 
     def capture( self, order, amount ):
         """Make a 'tagged pre-authorization completion' request using the approval
@@ -209,6 +217,7 @@ class FirstDataGGe4Processor(object):
         if self.settings.allow_capture == u'allow_capture':
             annotations = IAnnotations( order )
             txKw = dict(
+                Ecommerce_flag = '7',
                 Transaction_Type = '32',
                 DollarAmount = amount,
                 Transaction_Tag = annotations[TRANSACTION_TAG],
@@ -216,16 +225,16 @@ class FirstDataGGe4Processor(object):
             )
             response = self.connection.sendTransaction(**txKw)
             if self._is_successful_response(response):
-                if annotations.get( interfaces.keys.capture_amount ) is None:
-                    annotations[ interfaces.keys.capture_amount ] = amount
+                if annotations.get( GPInterfaces.keys.capture_amount ) is None:
+                    annotations[ GPInterfaces.keys.capture_amount ] = amount
                 else:
-                    annotations[ interfaces.keys.capture_amount ] += amount  
+                    annotations[ GPInterfaces.keys.capture_amount ] += amount  
                 order.user_payment_info_trans_id = response.Transaction_Tag
-                return interfaces.keys.results_success
+                return GPInterfaces.keys.results_success
         return "Capture Failed"
 
     def refund( self, order, amount ):
         raise NotImplementedError
         # if self.settings.allow_refunds == u'allow_refund':
-        #     return interfaces.keys.results_success
+        #     return GPInterfaces.keys.results_success
         # return "Refund Failed"

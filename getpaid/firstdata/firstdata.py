@@ -178,6 +178,7 @@ class FirstDataGGe4Processor(object):
                 DollarAmount = price,
                 CardHoldersName = payment.name_on_card,
                 Card_Number = payment.credit_card,
+                CVD_Presence_Ind = '1',
                 Expiry_Date = self._format_cc_expiry(payment),
                 ZipCode = order.billing_address.bill_postal_code,
                 Currency = 'USD', # TODO: allow others
